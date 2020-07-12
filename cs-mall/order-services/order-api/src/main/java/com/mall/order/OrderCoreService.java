@@ -15,7 +15,4 @@ public interface OrderCoreService {
      * @return
      */
     CreateOrderResponse createOrder(CreateOrderRequest request);
-
-
-
 }
