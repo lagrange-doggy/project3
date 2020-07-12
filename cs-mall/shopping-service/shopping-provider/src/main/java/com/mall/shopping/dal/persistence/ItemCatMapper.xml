@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mall.shopping.dal.persistence.ItemCatMapper">
+  <resultMap id="BaseResultMap" type="com.mall.shopping.dal.entitys.ItemCat">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="sort_order" jdbcType="INTEGER" property="sortOrder" />
+    <result column="is_parent" jdbcType="BIT" property="isParent" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, parent_id, name, status, sort_order, is_parent, icon, remark, created, updated
+  </sql>
+
+  <sql id="Base_item_panelContent_List">
+    select pc.`product_id` as productId,i.`price` as salePrice,i.`title` as productName,i.`sell_point` as sbuTitle,pc.`pic_url` as picUrl
+    from tb_panel_content pc,tb_item i where pc.`product_id`=i.`id`
+
+  </sql>
+  <delete id="deleteItemGoodsById">
+    delete from weizhitable
+  </delete>
+  <select id="selectGoodsListByPageAndSizeAndSortAndPriceGtAndPriceLte" resultType="com.mall.shopping.dto.ShoppingGoodsVO">
+    <include refid="Base_item_panelContent_List" />
+    <if test="priceGt != null">
+      and i.`price` &gt; #{priceGt}
+    </if>
+    <if test="priceLte != null">
+      and i.`price` &lt; #{priceLte}
+    </if>
+    limit #{page},#{size}
+  </select>
+
+  <select id="selectGoodsListByPageAndSizeAndSortAndPriceGtAndPriceLteSortOrder" resultType="com.mall.shopping.dto.ShoppingGoodsVO">
+    <include refid="Base_item_panelContent_List" />
+    <if test="priceGt != null">
+      and i.`price` &gt; #{priceGt}
+    </if>
+    <if test="priceLte != null">
+      and i.`price` &lt; #{priceLte}
+    </if>
+    <if test="sort != null">
+      order by i.`price`
+    </if>
+    limit #{page},#{size}
+  </select>
+
+  <select id="selectGoodsListByPageAndSizeAndSortAndPriceGtAndPriceLteSortReversedOrder"
+          resultType="com.mall.shopping.dto.ShoppingGoodsVO">
+    <include refid="Base_item_panelContent_List" />
+    <if test="priceGt != null">
+      and i.`price` &gt; #{priceGt}
+    </if>
+    <if test="priceLte != null">
+      and i.`price` &lt; #{priceLte}
+    </if>
+    <if test="sort != null">
+      order by i.`price` desc
+    </if>
+    limit #{page},#{size}
+  </select>
+
+  <select id="countByPriceGtAndPriceLte" resultType="integer">
+    select count(*) from tb_panel_content pc,tb_item i where pc.`product_id`=i.`id`
+    <if test="priceGt != null">
+      and i.`price` &gt; #{priceGt}
+    </if>
+    <if test="priceLte != null">
+      and i.`price` &lt; #{priceLte}
+    </if>
+  </select>
+
+</mapper>
