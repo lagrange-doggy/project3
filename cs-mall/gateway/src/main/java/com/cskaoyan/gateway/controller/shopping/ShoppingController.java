@@ -95,8 +95,6 @@ public class ShoppingController {
     @Anoymous
     @DeleteMapping("/items/{id}")
     public ResponseData items(@PathVariable("id") Integer id) {
-        //从cookie取userid
-        //用userid和itenid查找
         //根据id删除
         Integer delete = productCateService.deleteItemGoodsById(id);
         if (delete == 0) {
