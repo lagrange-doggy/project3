@@ -146,5 +146,15 @@ public class MemberController {
         log.info("用户正常退出登陆");
         return new ResponseUtil<>().setData(null);
     }
+
+    @Anoymous
+    @GetMapping("verify")
+    public ResponseData verify(UserVerifyRequest request) {
+        UserVerifyResponse response = memberService.verifyUser(request);
+        if (!response.getCode().equals(SysRetCodeConstants.SUCCESS.getCode())) {
+            return new ResponseUtil<>().setErrorMsg(response.getMsg());
+        }
+        return new ResponseUtil<>().setData(response);
+    }
 }
 

@@ -9,7 +9,9 @@ import com.mall.user.IMemberService;
 import com.mall.user.constants.SysRetCodeConstants;
 import com.mall.user.converter.MemberConverter;
 import com.mall.user.dal.entitys.Member;
+import com.mall.user.dal.entitys.UserVerify;
 import com.mall.user.dal.persistence.MemberMapper;
+import com.mall.user.dal.persistence.UserVerifyMapper;
 import com.mall.user.dto.*;
 import com.mall.user.utils.ExceptionProcessorUtils;
 import com.mall.user.utils.JwtTokenUtils;
@@ -157,6 +159,42 @@ public class MemberServiceImpl implements IMemberService {
     @Override
     public Integer updatePasswordByUsername(String username, String md5Password) {
         return memberMapper.updatePasswordByUsername(username, md5Password);
+    }
+
+
+
+    @Autowired
+    UserVerifyMapper userVerifyMapper;
+
+    /**
+     * 尚政宇
+     * @param request
+     * @return 在邮箱中激活账号
+     * 首先根据uuid在tb_user_verify表中找到这条记录，判断is_expire是否过期，如果过期,
+     * 直接返回状态码：003201；如果没有过期，将这条记录删除之，同时根据userName，在tb_member表中
+     * 修改对应的字段isverified为Y
+     *
+     */
+    @Override
+    public UserVerifyResponse verifyUser(UserVerifyRequest request) {
+        UserVerifyResponse response = new UserVerifyResponse();
+        try {
+            request.requestCheck();
+            UserVerify userVerify = userVerifyMapper.selectByUUID(request.getUuid());
+            if (userVerify == null || userVerify.getIsExpire().equals("Y")) {
+                response.setCode(SysRetCodeConstants.DATA_NOT_EXIST.getCode());
+                response.setMsg(SysRetCodeConstants.DATA_NOT_EXIST.getMessage());
+            }else{
+                userVerifyMapper.delete(userVerify);
+                memberMapper.updateIsVerifiedByUsername(request.getUserName());
+                response.setCode(SysRetCodeConstants.SUCCESS.getCode());
+                response.setMsg(SysRetCodeConstants.SUCCESS.getMessage());
+            }
+        } catch (Exception exception) {
+            log.error("MemberServiceImpl.verifyUser Occur Exception :" + exception);
+            ExceptionProcessorUtils.wrapperHandlerException(response, exception);
+        }
+        return response;
     }
 
 
