@@ -2,6 +2,7 @@ package com.mall.shopping;
 
 import com.mall.shopping.dto.AllProductCateRequest;
 import com.mall.shopping.dto.AllProductCateResponse;
+import com.mall.shopping.dto.RecommendResponse;
 import com.mall.shopping.dto.ShoppingGoodsVO;
 
 import java.util.List;
@@ -25,4 +26,6 @@ public interface IProductCateService {
     Integer countByPriceGtAndPriceLte(Integer priceGt, Integer priceLte);
 
     Integer deleteItemGoodsById(Integer id);
+
+    RecommendResponse queryRecomment();
 }

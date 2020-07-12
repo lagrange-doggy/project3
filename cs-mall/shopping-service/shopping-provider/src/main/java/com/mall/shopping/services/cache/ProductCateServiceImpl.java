@@ -104,20 +104,20 @@ public class ProductCateServiceImpl implements IProductCateService {
     ContentConverter contentConverter;
 
 
-    // @Override
-    // public RecommendResponse queryRecomment() {
-    //     String name = "热门推荐";
-    //     Panel panel = panelMapper.selectByName(name);
-    //     Example example = new Example(PanelContent.class);
-    //     example.createCriteria().andEqualTo("panelId", panel.getId());
-    //     List<PanelContentItem> panelContentItems = panelContentMapper.selectPanelContentAndProductWithPanelId(panel.getId());
-    //     RecommendResponse recommendResponse = new RecommendResponse();
-    //     HashSet<PanelDto> panelContentItemDtos = new HashSet<>();
-    //     panel.setPanelContentItems(panelContentItems);
-    //     panelContentItemDtos.add(contentConverter.panen2Dto(panel));
-    //     recommendResponse.setPanelContentItemDtos(panelContentItemDtos);
-    //     return recommendResponse;
-    // }
+     @Override
+     public RecommendResponse queryRecomment() {
+         String name = "热门推荐";
+         Panel panel = panelMapper.selectByName(name);
+         Example example = new Example(PanelContent.class);
+         example.createCriteria().andEqualTo("panelId", panel.getId());
+         List<PanelContentItem> panelContentItems = panelContentMapper.selectPanelContentAndProductWithPanelId(panel.getId());
+         RecommendResponse recommendResponse = new RecommendResponse();
+         HashSet<PanelDto> panelContentItemDtos = new HashSet<>();
+         panel.setPanelContentItems(panelContentItems);
+         panelContentItemDtos.add(contentConverter.panen2Dto(panel));
+         recommendResponse.setPanelContentItemDtos(panelContentItemDtos);
+         return recommendResponse;
+     }
 
 
     private AllProductCateResponse getResponse(List<ItemCat> itemCats) {

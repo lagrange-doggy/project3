@@ -17,5 +17,9 @@
     <!-- WARNING - @mbg.generated -->
     id, username, uuid, register_date, is_verify, is_expire
   </sql>
+
+  <select id="selectByUUID" resultMap="BaseResultMap">
+    select * from tb_user_verify where uuid = #{uuid}
+  </select>
   
 </mapper>

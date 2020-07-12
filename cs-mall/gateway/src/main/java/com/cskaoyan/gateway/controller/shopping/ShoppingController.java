@@ -3,10 +3,7 @@ package com.cskaoyan.gateway.controller.shopping;
 import com.mall.commons.result.ResponseData;
 import com.mall.commons.result.ResponseUtil;
 import com.mall.shopping.IProductCateService;
-import com.mall.shopping.dto.AllProductCateRequest;
-import com.mall.shopping.dto.AllProductCateResponse;
-import com.mall.shopping.dto.ShoppingGoodsResultVO;
-import com.mall.shopping.dto.ShoppingGoodsVO;
+import com.mall.shopping.dto.*;
 import com.mall.user.annotation.Anoymous;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
@@ -105,5 +102,17 @@ public class ShoppingController {
             log.info("正常删除购物车商品，商品id=" + id);
             return new ResponseUtil().setData("删除成功，id = " + id);
         }
+    }
+
+    /**
+     * 尚政宇
+     *
+     * @return 返回热门推荐
+     */
+    @Anoymous
+    @RequestMapping("recommend")
+    public ResponseData recommend() {
+        RecommendResponse recommendResponse = productCateService.queryRecomment();
+        return new ResponseUtil<>().setData(recommendResponse.getPanelContentItemDtos());
     }
 }
