@@ -27,6 +27,9 @@ public class ClearCartItemHandler extends AbstractTransHandler {
         return false;
     }
 
+    /**
+     * 清空购物车
+     */
     @Override
     public boolean handle(TransHandlerContext context) {
         return true;

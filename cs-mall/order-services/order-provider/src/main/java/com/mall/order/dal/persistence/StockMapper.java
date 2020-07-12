@@ -17,4 +17,6 @@ public interface StockMapper extends TkMapper<Stock> {
  Stock selectStock(Long itemId);
 
  List<Stock> findStocksForUpdate(@Param("itemIds")List<Long> itemIds);
+
+    Integer selectLimitNumByProductId(@Param("productId") Long productId);
 }
