@@ -74,7 +74,7 @@ public class MemberController {
      */
     @PostMapping("/login")
     @Anoymous
-    public ResponseData login(@RequestBody UserLoginRequest loginRequest, HttpServletRequest request){
+    public ResponseData login(@RequestBody UserLoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response){
         //1.校验验证码是否正确
         KaptchaCodeRequest kaptchaCodeRequest = new KaptchaCodeRequest();
         String uuid = CookieUtil.getCookieValue(request, "kaptcha_uuid");
@@ -90,7 +90,10 @@ public class MemberController {
         if(!loginResponse.getCode().equals(SysRetCodeConstants.SUCCESS.getCode())){
             return new ResponseUtil<>().setErrorMsg(loginResponse.getMsg());
         }
-        return new  ResponseUtil().setData(loginRequest);
+        //3.set-cookie
+        Cookie access_token = CookieUtil.genCookie("ACCESS_TOKEN", loginResponse.getToken(), "/", 86400);
+        response.addCookie(access_token);
+        return new ResponseUtil<>().setData(loginResponse);
     }
 
     /*

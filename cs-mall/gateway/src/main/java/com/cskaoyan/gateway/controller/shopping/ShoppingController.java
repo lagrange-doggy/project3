@@ -3,6 +3,7 @@ package com.cskaoyan.gateway.controller.shopping;
 import com.mall.commons.result.ResponseData;
 import com.mall.commons.result.ResponseUtil;
 import com.mall.shopping.IProductCateService;
+import com.mall.shopping.constants.ShoppingRetCode;
 import com.mall.shopping.dto.*;
 import com.mall.user.annotation.Anoymous;
 import lombok.extern.slf4j.Slf4j;
@@ -23,11 +24,20 @@ public class ShoppingController {
     @Reference(timeout = 3000, check = false)
     IProductCateService productCateService;
 
-
+    /**
+     * 刘鹏飞
+     * 获取商品所有分类
+     * @param request
+     * @return
+     */
     @GetMapping("categories")
+    @Anoymous//测试用
     public ResponseData categories(AllProductCateRequest request) {
         AllProductCateResponse allProductCate = productCateService.getAllProductCate(request);
-        return new ResponseUtil().setData(allProductCate);
+        if(!allProductCate.getCode().equals(ShoppingRetCode.SUCCESS.getCode())){
+            return new ResponseUtil<>().setErrorMsg(Integer.valueOf(allProductCate.getCode()),allProductCate.getMsg());
+        }
+        return new ResponseUtil<>().setData(allProductCate.getProductCateDtoList());
     }
 
     /**
