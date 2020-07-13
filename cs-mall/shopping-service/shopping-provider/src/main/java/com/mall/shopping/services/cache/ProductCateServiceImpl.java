@@ -120,6 +120,18 @@ public class ProductCateServiceImpl implements IProductCateService {
      }
 
 
+/*
+* 胡
+* 删除
+*
+*
+* */
+    @Override
+    public Integer deleteCarGoodsById(Integer uid, Integer pid) {
+        return 1;
+    }
+
+
     private AllProductCateResponse getResponse(List<ItemCat> itemCats) {
         List<ProductCateDto> list = new ArrayList<>();
         for (ItemCat itemCat : itemCats) {

@@ -28,4 +28,7 @@ public interface IProductCateService {
     Integer deleteItemGoodsById(Integer id);
 
     RecommendResponse queryRecomment();
+
+    Integer deleteCarGoodsById(Integer uid, Integer pid);
+
 }
