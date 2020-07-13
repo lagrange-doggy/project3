@@ -32,7 +32,7 @@ public class MemberController {
 
     @Reference(timeout = 3000,check = false)
     IMemberService memberService;
-    public static String ACCESS_TOKEN="acess_token";
+    public static String ACCESS_TOKEN="access_token";
 
     @Reference(check = false)
     IKaptchaService iKaptchaService;
