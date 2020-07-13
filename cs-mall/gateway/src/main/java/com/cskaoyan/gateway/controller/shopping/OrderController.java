@@ -9,6 +9,9 @@ import com.mall.order.OrderQueryService;
 import com.mall.order.constant.OrderRetCode;
 import com.mall.order.dto.CreateOrderRequest;
 import com.mall.order.dto.CreateOrderResponse;
+import com.mall.order.dto.OrderListRequest;
+import com.mall.order.dto.OrderListResponse;
+import com.mall.user.constants.SysRetCodeConstants;
 import com.mall.user.intercepter.TokenIntercepter;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -55,6 +58,31 @@ public class OrderController {
             return new ResponseUtil<>().setData(response.getOrderId());
         }
         return new ResponseUtil<>().setErrorMsg(response.getMsg());
+    }
+
+    /**
+     *  Fang
+     *  获取当前用户的所有订单
+     *  因为参考接口没有sort，所以没有接收sort
+     * @param page
+     * @param size
+     * @param servletRequest
+     * @return
+     */
+    @GetMapping("/order")
+    public ResponseData orderList(Integer page, Integer size, HttpServletRequest servletRequest){
+        String userInfo = (String) servletRequest.getAttribute(TokenIntercepter.USER_INFO_KEY);
+        JSONObject jsonObject = JSON.parseObject(userInfo);
+        Long uid = Long.parseLong(jsonObject.get("uid").toString());
+        OrderListRequest request = new OrderListRequest();
+        request.setUserId(uid);
+        request.setPage(page);
+        request.setSize(size);
+        OrderListResponse response = orderQueryService.orderList(request);
+        if(response.getCode().equals(SysRetCodeConstants.SUCCESS.getCode())){
+            return new ResponseUtil().setData(response);
+        }
+        return new ResponseUtil().setErrorMsg(response.getMsg());
     }
 
     /**

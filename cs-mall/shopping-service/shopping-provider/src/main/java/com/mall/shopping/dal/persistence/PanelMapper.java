@@ -14,5 +14,10 @@ public interface PanelMapper extends TkMapper<Panel> {
 
     Panel selectByName(@Param("name") String name);
 
+
     List<ShoppingNavigationVO> selectPanelListByPanerId();
+
+    //homepage
+    Integer[] selectAllPanelIdByPosition(@Param("position") Integer position);
+
 }
