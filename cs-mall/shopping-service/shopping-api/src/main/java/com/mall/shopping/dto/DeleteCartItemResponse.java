@@ -7,4 +7,6 @@ import com.mall.commons.result.AbstractResponse;
  */
 
 public class DeleteCartItemResponse extends AbstractResponse{
+    Long uid;
+    long pid;
 }
