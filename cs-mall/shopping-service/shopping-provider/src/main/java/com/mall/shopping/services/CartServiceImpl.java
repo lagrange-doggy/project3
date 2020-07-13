@@ -71,8 +71,8 @@ public class CartServiceImpl implements ICartService {
             //获取request中的数据
             Long userId = request.getUserId();
             String key = Key_JOINT + userId;
-            Long itemId = request.getItemId();
-            Integer num = request.getNum();
+            Long itemId = request.getProductId();
+            Integer num = request.getProductNum();
 
             //根据itemId去获取商品信息
             Item item = itemMapper.selectById(itemId);
