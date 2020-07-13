@@ -69,7 +69,7 @@ public class Order {
      * 状态 0未付款 1已付款 2未发货 3已发货 4交易成功 5交易关闭 6交易失败
 
      */
-
+    @Column(name = "status")
     private Integer status;
 
 

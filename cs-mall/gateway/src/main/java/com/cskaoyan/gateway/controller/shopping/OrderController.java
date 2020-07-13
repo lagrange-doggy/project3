@@ -6,6 +6,7 @@ import com.mall.commons.result.ResponseData;
 import com.mall.commons.result.ResponseUtil;
 import com.mall.order.OrderCoreService;
 import com.mall.order.OrderQueryService;
+import com.mall.order.constant.OrderListByUserIdVO;
 import com.mall.order.constant.OrderRetCode;
 import com.mall.order.dto.CreateOrderRequest;
 import com.mall.order.dto.CreateOrderResponse;
@@ -70,7 +71,7 @@ public class OrderController {
      * @return
      */
     @GetMapping("/order")
-    public ResponseData orderList(Integer page, Integer size, HttpServletRequest servletRequest){
+    public ResponseData orderList(Integer size, Integer page,  HttpServletRequest servletRequest){
         String userInfo = (String) servletRequest.getAttribute(TokenIntercepter.USER_INFO_KEY);
         JSONObject jsonObject = JSON.parseObject(userInfo);
         Long uid = Long.parseLong(jsonObject.get("uid").toString());
@@ -80,9 +81,12 @@ public class OrderController {
         request.setSize(size);
         OrderListResponse response = orderQueryService.orderList(request);
         if(response.getCode().equals(SysRetCodeConstants.SUCCESS.getCode())){
-            return new ResponseUtil().setData(response);
+            OrderListByUserIdVO orderListByUserId = new OrderListByUserIdVO();
+            orderListByUserId.setData(response.getDetailInfoList());
+            orderListByUserId.setTotal(response.getTotal());
+            return new ResponseUtil<>().setData(orderListByUserId);
         }
-        return new ResponseUtil().setErrorMsg(response.getMsg());
+        return new ResponseUtil<>().setErrorMsg(response.getMsg());
     }
 
     /**

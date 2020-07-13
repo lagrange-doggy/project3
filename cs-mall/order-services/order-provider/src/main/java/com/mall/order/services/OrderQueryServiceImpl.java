@@ -59,11 +59,15 @@ public class OrderQueryServiceImpl implements OrderQueryService {
 
             Long userId = request.getUserId();
             //根据userId去获得对应的订单信息
-            List<Order> orders = orderMapper.selectOrderByUserId(userId);
+            //List<Order> orders = orderMapper.selectOrderByUserId(userId);
+            Example example = new Example(Order.class);
+            example.setOrderByClause("update_time desc");
+            example.createCriteria().andEqualTo("userId", userId);
+            List<Order> orders = orderMapper.selectByExample(example);
             if(orders == null){
                 //
-                response.setCode(OrderRetCode.SUCCESS.getCode());
-                response.setMsg(OrderRetCode.SUCCESS.getMessage());
+                response.setDetailInfoList(new ArrayList<>());
+                response.setTotal(0L);
                 return response;
             }
             //先获取order表信息，并转换成OrderDetailInfo
