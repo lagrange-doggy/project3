@@ -28,5 +28,4 @@ public interface ItemCatMapper extends TkMapper<ItemCat> {
 
     Integer countByPriceGtAndPriceLte(@Param("priceGt") Integer priceGt, @Param("priceLte") Integer priceLte);
 
-    Integer deleteItemGoodsById(@Param("id") Integer id);
 }

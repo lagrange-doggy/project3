@@ -34,7 +34,7 @@ public class MemberController {
     IMemberService memberService;
     public static String ACCESS_TOKEN="acess_token";
 
-    @Reference(check = false)
+    @Reference(timeout = 3000,check = false)
     IKaptchaService iKaptchaService;
 
     /**

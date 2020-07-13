@@ -98,14 +98,6 @@ public class ProductCateServiceImpl implements IProductCateService {
         return itemCatMapper.countByPriceGtAndPriceLte(priceGt, priceLte);
     }
 
-    /**
-     * 韩
-     * 删除购物车指定商品
-     */
-    @Override
-    public Integer deleteItemGoodsById(Integer id) {
-        return itemCatMapper.deleteItemGoodsById(id);
-    }
 
     @Autowired
     PanelMapper panelMapper;

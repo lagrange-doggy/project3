@@ -117,27 +117,6 @@ public class ShoppingController {
         return new ResponseUtil<ShoppingGoodsResultVO>().setData(resultVO);
     }
 
-    /**
-     * 韩
-     * 删除购物⻋中选中的商品（未完成）表格没弄清楚不知道哪个表 sql未完成
-     * <p>
-     * 返回参数示例：
-     * {"success":true,"message":"success","code":200,"result":"成功","timestamp":1587795935665}
-     */
-    @Anoymous
-    @DeleteMapping("/items/{id}")
-    public ResponseData items(@PathVariable("id") Integer id) {
-        //根据id删除
-        Integer delete = productCateService.deleteItemGoodsById(id);
-        if (delete == 0) {
-            //如果没有返回失败
-            log.info("查询错误id，未能删除" + id);
-            return new ResponseUtil().setErrorMsg("删除失败，id = " + id);
-        } else {
-            log.info("正常删除购物车商品，商品id=" + id);
-            return new ResponseUtil().setData("删除成功，id = " + id);
-        }
-    }
 
     /**
      * 尚政宇
