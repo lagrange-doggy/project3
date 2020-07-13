@@ -92,6 +92,7 @@ public class MemberController {
         }
         //3.set-cookie
         Cookie access_token = CookieUtil.genCookie(ACCESS_TOKEN, loginResponse.getToken(), "/", 86400);
+        access_token.setHttpOnly(true);
         response.addCookie(access_token);
         return new ResponseUtil<>().setData(loginResponse);
     }
