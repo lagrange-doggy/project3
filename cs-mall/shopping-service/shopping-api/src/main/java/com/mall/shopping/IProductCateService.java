@@ -25,7 +25,6 @@ public interface IProductCateService {
 
     Integer countByPriceGtAndPriceLte(Integer priceGt, Integer priceLte);
 
-    Integer deleteItemGoodsById(Integer id);
 
     RecommendResponse queryRecomment();
 }

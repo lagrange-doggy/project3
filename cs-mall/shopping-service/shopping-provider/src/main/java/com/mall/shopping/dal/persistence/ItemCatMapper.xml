@@ -22,9 +22,6 @@
     from tb_panel_content pc,tb_item i where pc.`product_id`=i.`id`
 
   </sql>
-  <delete id="deleteItemGoodsById">
-    delete from weizhitable
-  </delete>
   <select id="selectGoodsListByPageAndSizeAndSortAndPriceGtAndPriceLte" resultType="com.mall.shopping.dto.ShoppingGoodsVO">
     <include refid="Base_item_panelContent_List" />
     <if test="priceGt != null">
