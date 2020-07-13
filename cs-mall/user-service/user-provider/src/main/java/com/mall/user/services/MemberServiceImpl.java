@@ -112,8 +112,9 @@ public class MemberServiceImpl implements IMemberService {
 
     private String getToken(Member member) {
         Map map = new HashMap<>();
-        map.put("UserId",member.getId());
-        map.put("UserName",member.getUsername());
+        map.put("uid",member.getId());
+        map.put("username",member.getUsername());
+        map.put("file",member.getFile());
         String msg = JSON.toJSONString(map);
         return JwtTokenUtils.builder().msg(msg).build().creatJwtToken();
     }
