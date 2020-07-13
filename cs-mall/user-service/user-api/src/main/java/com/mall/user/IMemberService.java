@@ -39,4 +39,11 @@ public interface IMemberService {
     UserVerifyLoginResponse verifyLoginUser(String token);
 
     Integer updatePasswordByUsername(String username, String md5Password);
+
+    /**
+     * 在邮箱中激活账号
+     * @param request
+     * @return
+     */
+    UserVerifyResponse verifyUser(UserVerifyRequest request);
 }

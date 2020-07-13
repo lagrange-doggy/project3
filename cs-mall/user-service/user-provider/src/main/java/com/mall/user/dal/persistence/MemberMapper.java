@@ -9,4 +9,6 @@ public interface MemberMapper extends TkMapper<Member> {
 
     @Update("update tb_member set password = #{md5Password} where username = #{username}")
     Integer updatePasswordByUsername(@Param("username") String username, @Param("md5Password") String md5Password);
+
+    void updateIsVerifiedByUsername(@Param("userName") String userName);
 }

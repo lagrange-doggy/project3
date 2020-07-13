@@ -4,6 +4,7 @@ import com.mall.commons.result.ResponseData;
 import com.mall.commons.result.ResponseUtil;
 import com.mall.shopping.IProductCateService;
 import com.mall.shopping.IShoppingNavigationService;
+import com.mall.shopping.constants.ShoppingRetCode;
 import com.mall.shopping.dto.*;
 import com.mall.user.annotation.Anoymous;
 import com.sun.org.apache.bcel.internal.generic.NEW;
@@ -30,10 +31,20 @@ public class ShoppingController {
     IShoppingNavigationService shoppingNavigationService;
 
 
+    /**
+     * 刘鹏飞
+     * 获取商品所有分类
+     * @param request
+     * @return
+     */
     @GetMapping("categories")
+    @Anoymous//测试用
     public ResponseData categories(AllProductCateRequest request) {
         AllProductCateResponse allProductCate = productCateService.getAllProductCate(request);
-        return new ResponseUtil().setData(allProductCate);
+        if(!allProductCate.getCode().equals(ShoppingRetCode.SUCCESS.getCode())){
+            return new ResponseUtil<>().setErrorMsg(Integer.valueOf(allProductCate.getCode()),allProductCate.getMsg());
+        }
+        return new ResponseUtil<>().setData(allProductCate.getProductCateDtoList());
     }
 
     /**
@@ -63,8 +74,11 @@ public class ShoppingController {
      */
     @Anoymous
     @GetMapping("/goods")
-    public ResponseData<ShoppingGoodsResultVO> goodsList(Integer page, Integer size, String sort, Integer priceGt, Integer priceLte) {
+    public ResponseData<ShoppingGoodsResultVO> goodsList(Integer page, Integer size, String sort,
+                                                         Integer priceGt, Integer priceLte) {
+        //满足最高最佳的商品合计多少个
         Integer total = productCateService.countByPriceGtAndPriceLte(priceGt, priceLte);
+        //获取商品结果集
         List<ShoppingGoodsVO> data = productCateService.SelectGoodsListByPageAndSizeAndSort(page, size,
                 sort, priceGt, priceLte,total);
         //判断列表是否为空
@@ -98,8 +112,6 @@ public class ShoppingController {
     @Anoymous
     @DeleteMapping("/items/{id}")
     public ResponseData items(@PathVariable("id") Integer id) {
-        //从cookie取userid
-        //用userid和itenid查找
         //根据id删除
         Integer delete = productCateService.deleteItemGoodsById(id);
         if (delete == 0) {
@@ -112,18 +124,32 @@ public class ShoppingController {
         }
     }
 
+
     //导航栏显示接口 杨
     @Anoymous
     @GetMapping("navigation")
-    public ResponseData navigation(){
+    public ResponseData navigation() {
         List<ShoppingNavigationVO> navigationList = shoppingNavigationService.getPanelList();
 
-        if ( navigationList.size() == 0 ){
+        if (navigationList.size() == 0) {
             log.info("查询错误，数据库内数据异常");
             return new ResponseUtil<List<ShoppingNavigationVO>>().setErrorMsg("系统异常");
-        }else {
+        } else {
             log.info("查询正常");
             return new ResponseUtil<List<ShoppingNavigationVO>>().setData(navigationList);
         }
+    }
+
+    /**
+     * 尚政宇
+     *
+     * @return 返回热门推荐
+     */
+    @Anoymous
+    @RequestMapping("recommend")
+    public ResponseData recommend() {
+        RecommendResponse recommendResponse = productCateService.queryRecomment();
+        return new ResponseUtil<>().setData(recommendResponse.getPanelContentItemDtos());
+
     }
 }

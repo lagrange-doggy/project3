@@ -1,6 +1,7 @@
-package com.mall.shopping.services.cache;
+package com.mall.shopping.services;
 
 import com.mall.shopping.IProductCateService;
+import com.mall.shopping.constants.ShoppingRetCode;
 import com.mall.shopping.converter.ContentConverter;
 import com.mall.shopping.dal.entitys.ItemCat;
 import com.mall.shopping.dal.entitys.Panel;
@@ -10,6 +11,8 @@ import com.mall.shopping.dal.persistence.ItemCatMapper;
 import com.mall.shopping.dal.persistence.PanelContentMapper;
 import com.mall.shopping.dal.persistence.PanelMapper;
 import com.mall.shopping.dto.*;
+import com.mall.shopping.services.cache.CacheManager;
+import com.mall.shopping.utils.ExceptionProcessorUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.BeanUtils;
@@ -34,6 +37,7 @@ public class ProductCateServiceImpl implements IProductCateService {
     ItemCatMapper itemCatMapper;
 
     /**
+     * 刘鹏飞
      * 获取商品分类
      *
      * @param request
@@ -41,15 +45,24 @@ public class ProductCateServiceImpl implements IProductCateService {
      */
     @Override
     public AllProductCateResponse getAllProductCate(AllProductCateRequest request) {
-        //先从缓存中获取
-        CacheManager cacheManager = new CacheManager();
-        String allProductCate = cacheManager.checkCache("allProductCate");
-
-        Example example = new Example(ItemCat.class);
-        example.setOrderByClause(request.getSort());
-        List<ItemCat> itemCats = itemCatMapper.selectByExample(example);
-        //转换Bean
-        AllProductCateResponse response = getResponse(itemCats);
+        AllProductCateResponse response = new AllProductCateResponse();
+        try {
+            //先从缓存中获取(待实现)
+//            CacheManager cacheManager = new CacheManager();
+//            String allProductCate = cacheManager.checkCache("allProductCate");
+            request.requestCheck();
+            //从数据库中获取
+            Example example = new Example(ItemCat.class);
+            example.setOrderByClause(request.getSort());
+            List<ItemCat> itemCats = itemCatMapper.selectByExample(example);
+            //转换Bean
+            response = getResponse(itemCats);
+            response.setCode(ShoppingRetCode.SUCCESS.getCode());
+            response.setMsg(ShoppingRetCode.SUCCESS.getMessage());
+        } catch (Exception e) {
+            log.error(" ProductCateServiceImpl.AllProductCateResponse Occur Exception :" +e);
+            ExceptionProcessorUtils.wrapperHandlerException(response,e);
+        }
         return response;
     }
 
@@ -104,20 +117,20 @@ public class ProductCateServiceImpl implements IProductCateService {
     ContentConverter contentConverter;
 
 
-    // @Override
-    // public RecommendResponse queryRecomment() {
-    //     String name = "热门推荐";
-    //     Panel panel = panelMapper.selectByName(name);
-    //     Example example = new Example(PanelContent.class);
-    //     example.createCriteria().andEqualTo("panelId", panel.getId());
-    //     List<PanelContentItem> panelContentItems = panelContentMapper.selectPanelContentAndProductWithPanelId(panel.getId());
-    //     RecommendResponse recommendResponse = new RecommendResponse();
-    //     HashSet<PanelDto> panelContentItemDtos = new HashSet<>();
-    //     panel.setPanelContentItems(panelContentItems);
-    //     panelContentItemDtos.add(contentConverter.panen2Dto(panel));
-    //     recommendResponse.setPanelContentItemDtos(panelContentItemDtos);
-    //     return recommendResponse;
-    // }
+     @Override
+     public RecommendResponse queryRecomment() {
+         String name = "热门推荐";
+         Panel panel = panelMapper.selectByName(name);
+         Example example = new Example(PanelContent.class);
+         example.createCriteria().andEqualTo("panelId", panel.getId());
+         List<PanelContentItem> panelContentItems = panelContentMapper.selectPanelContentAndProductWithPanelId(panel.getId());
+         RecommendResponse recommendResponse = new RecommendResponse();
+         HashSet<PanelDto> panelContentItemDtos = new HashSet<>();
+         panel.setPanelContentItems(panelContentItems);
+         panelContentItemDtos.add(contentConverter.panen2Dto(panel));
+         recommendResponse.setPanelContentItemDtos(panelContentItemDtos);
+         return recommendResponse;
+     }
 
 
     private AllProductCateResponse getResponse(List<ItemCat> itemCats) {

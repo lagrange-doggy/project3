@@ -26,5 +26,9 @@
     <!-- WARNING - @mbg.generated -->
     id, username, password, phone, email, created, updated, sex, address, state, file, description, points, balance,isverified
   </sql>
+
+  <update id="updateIsVerifiedByUsername">
+    UPDATE `project3`.`tb_member` SET `isverified` = 'Y' WHERE username=#{userName}
+  </update>
   
 </mapper>
