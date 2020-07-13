@@ -91,7 +91,7 @@ public class MemberController {
             return new ResponseUtil<>().setErrorMsg(loginResponse.getMsg());
         }
         //3.set-cookie
-        Cookie access_token = CookieUtil.genCookie("ACCESS_TOKEN", loginResponse.getToken(), "/", 86400);
+        Cookie access_token = CookieUtil.genCookie(ACCESS_TOKEN, loginResponse.getToken(), "/", 86400);
         response.addCookie(access_token);
         return new ResponseUtil<>().setData(loginResponse);
     }
