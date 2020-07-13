@@ -3,13 +3,18 @@ package com.cskaoyan.gateway.controller.shopping;
 import com.mall.commons.result.ResponseData;
 import com.mall.commons.result.ResponseUtil;
 import com.mall.shopping.IProductCateService;
+<<<<<<< HEAD
+import com.mall.shopping.IShoppingNavigationService;
+=======
 
 import com.mall.shopping.IProductService;
 
 
+>>>>>>> 078b07a88631bcc5466762ac57f50cef27d1ff1f
 import com.mall.shopping.constants.ShoppingRetCode;
 import com.mall.shopping.dto.*;
 import com.mall.user.annotation.Anoymous;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +32,11 @@ public class ShoppingController {
 
     @Reference(timeout = 3000, check = false)
     IProductCateService productCateService;
+
+
+    @Reference
+    IShoppingNavigationService shoppingNavigationService;
+
 
     /**
      * 刘鹏飞
@@ -121,6 +131,22 @@ public class ShoppingController {
         }
     }
 
+
+    //导航栏显示接口 杨
+    @Anoymous
+    @GetMapping("navigation")
+    public ResponseData navigation() {
+        List<ShoppingNavigationVO> navigationList = shoppingNavigationService.getPanelList();
+
+        if (navigationList.size() == 0) {
+            log.info("查询错误，数据库内数据异常");
+            return new ResponseUtil<List<ShoppingNavigationVO>>().setErrorMsg("系统异常");
+        } else {
+            log.info("查询正常");
+            return new ResponseUtil<List<ShoppingNavigationVO>>().setData(navigationList);
+        }
+    }
+
     /**
      * 尚政宇
      *
@@ -131,6 +157,7 @@ public class ShoppingController {
     public ResponseData recommend() {
         RecommendResponse recommendResponse = productCateService.queryRecomment();
         return new ResponseUtil<>().setData(recommendResponse.getPanelContentItemDtos());
+
     }
 
     /**
