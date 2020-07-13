@@ -3,7 +3,10 @@ package com.cskaoyan.gateway.controller.shopping;
 import com.mall.commons.result.ResponseData;
 import com.mall.commons.result.ResponseUtil;
 import com.mall.shopping.IProductCateService;
+
 import com.mall.shopping.IProductService;
+
+
 import com.mall.shopping.constants.ShoppingRetCode;
 import com.mall.shopping.dto.*;
 import com.mall.user.annotation.Anoymous;
@@ -25,11 +28,20 @@ public class ShoppingController {
     @Reference(timeout = 3000, check = false)
     IProductCateService productCateService;
 
-
+    /**
+     * 刘鹏飞
+     * 获取商品所有分类
+     * @param request
+     * @return
+     */
     @GetMapping("categories")
+    @Anoymous//测试用
     public ResponseData categories(AllProductCateRequest request) {
         AllProductCateResponse allProductCate = productCateService.getAllProductCate(request);
-        return new ResponseUtil().setData(allProductCate);
+        if(!allProductCate.getCode().equals(ShoppingRetCode.SUCCESS.getCode())){
+            return new ResponseUtil<>().setErrorMsg(Integer.valueOf(allProductCate.getCode()),allProductCate.getMsg());
+        }
+        return new ResponseUtil<>().setData(allProductCate.getProductCateDtoList());
     }
 
     /**
@@ -59,8 +71,11 @@ public class ShoppingController {
      */
     @Anoymous
     @GetMapping("/goods")
-    public ResponseData<ShoppingGoodsResultVO> goodsList(Integer page, Integer size, String sort, Integer priceGt, Integer priceLte) {
+    public ResponseData<ShoppingGoodsResultVO> goodsList(Integer page, Integer size, String sort,
+                                                         Integer priceGt, Integer priceLte) {
+        //满足最高最佳的商品合计多少个
         Integer total = productCateService.countByPriceGtAndPriceLte(priceGt, priceLte);
+        //获取商品结果集
         List<ShoppingGoodsVO> data = productCateService.SelectGoodsListByPageAndSizeAndSort(page, size,
                 sort, priceGt, priceLte,total);
         //判断列表是否为空

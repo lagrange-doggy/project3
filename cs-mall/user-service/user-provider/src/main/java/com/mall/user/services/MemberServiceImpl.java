@@ -83,10 +83,18 @@ public class MemberServiceImpl implements IMemberService {
         return null;
     }
 
+    /**
+     * 刘鹏飞
+     *
+     * 登录
+     * @param loginRequest
+     * @return
+     */
     @Override
     public UserLoginResponse login(UserLoginRequest loginRequest) {
         UserLoginResponse loginResponse = new UserLoginResponse();
         try {
+            loginRequest.requestCheck();
             //校验用户是和否存在和激活
             Member member = checkMember(loginRequest);
             //生成token

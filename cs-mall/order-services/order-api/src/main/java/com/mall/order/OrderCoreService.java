@@ -1,5 +1,6 @@
 package com.mall.order;
 
+import com.mall.order.constant.OrderDetailsVO;
 import com.mall.order.dto.*;
 
 /**
@@ -16,6 +17,5 @@ public interface OrderCoreService {
      */
     CreateOrderResponse createOrder(CreateOrderRequest request);
 
-
-
+    OrderDetailsVO selectorderDetailsByOrderIdAndUserId(Integer id, Long uid);
 }
