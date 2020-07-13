@@ -28,4 +28,8 @@
     </if>
     ORDER BY ${orderCol} ${orderDir}
   </select>
+
+  <select id="selectById" resultType="com.mall.shopping.dal.entitys.Item">
+      select * from tb_item where id = #{itemId}
+    </select>
 </mapper>

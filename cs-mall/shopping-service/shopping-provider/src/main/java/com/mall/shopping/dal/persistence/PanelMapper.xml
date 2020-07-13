@@ -25,4 +25,8 @@ from tb_panel a inner join tb_panel_content b on a.id=b.panel_id where a.id=#{pa
   <select id="selectByName" resultMap="BaseResultMap">
     select * from tb_panel where name = #{name}
   </select>
+
+  <select id="selectAllPanelIdByPosition" resultType="java.lang.Integer">
+      SELECT id FROM tb_panel where position = #{position};
+  </select>
 </mapper>

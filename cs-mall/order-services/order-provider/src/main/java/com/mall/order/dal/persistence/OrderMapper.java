@@ -14,4 +14,6 @@ public interface OrderMapper extends TkMapper<Order> {
     OrderDetailsVO selectorderDetailsByOrderId(@Param("id") Integer id, @Param("uid") Long uid);
 
     List<GoodsListVO> selectOrderGoodsListByOrderIdAndUserId(@Param("id") Integer id);
+
+    List<Order> selectOrderByUserId(@Param("userId") Long userId);
 }

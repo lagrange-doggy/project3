@@ -11,4 +11,7 @@ public interface PanelMapper extends TkMapper<Panel> {
     List<Panel> selectPanelContentById(@Param("panelId")Integer panelId);
 
     Panel selectByName(@Param("name") String name);
+
+    //homepage
+    Integer[] selectAllPanelIdByPosition(@Param("position") Integer position);
 }

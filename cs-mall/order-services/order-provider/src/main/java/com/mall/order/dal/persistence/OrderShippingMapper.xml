@@ -22,5 +22,9 @@
     <!-- WARNING - @mbg.generated -->
     order_id, receiver_name, receiver_phone, receiver_mobile, receiver_state, receiver_city, receiver_district, receiver_address, receiver_zip, created, updated
   </sql>
-  
+
+  <select id="queryByOrderId" resultType="com.mall.order.dal.entitys.OrderShipping">
+    select * from tb_order_shipping where order_id=#{orderId}
+  </select>
+
 </mapper>

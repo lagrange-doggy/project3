@@ -45,4 +45,12 @@
     total_fee as totalFee,pic_path as picPath
     from tb_order_item where order_id = #{id}
   </select>
+
+  <select id="selectOrderByUserId" resultType="com.mall.order.dal.entitys.Order">
+    select order_id, payment, payment_type, post_fee, status, create_time, update_time, payment_time, consign_time,
+     end_time, close_time, shipping_name, shipping_code, user_id, buyer_message, buyer_nick, buyer_comment
+     from tb_order
+     where user_id=#{userId}
+     order by update_time desc
+  </select>
 </mapper>

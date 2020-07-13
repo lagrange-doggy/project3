@@ -2,10 +2,12 @@ package com.cskaoyan.gateway.controller.shopping;
 
 import com.mall.commons.result.ResponseData;
 import com.mall.commons.result.ResponseUtil;
+import com.mall.shopping.IHomeService;
 import com.mall.shopping.IProductCateService;
 import com.mall.shopping.constants.ShoppingRetCode;
 import com.mall.shopping.dto.*;
 import com.mall.user.annotation.Anoymous;
+import com.mall.user.constants.SysRetCodeConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,26 @@ public class ShoppingController {
 
     @Reference(timeout = 3000, check = false)
     IProductCateService productCateService;
+
+    @Reference(timeout = 3000,check = false)
+    IHomeService homeService;
+    
+
+    /**
+     *  Fang
+     *  显示主页信息
+     *  涉及item，panel，panel_content表
+     * @return
+     */
+    @Anoymous
+    @GetMapping("/homepage")
+    public ResponseData homepageList(){
+        HomePageResponse homePageResponse = homeService.homepage();
+        if(homePageResponse.getCode().equals(SysRetCodeConstants.SUCCESS.getCode())){
+            return new ResponseUtil<>().setData(homePageResponse.getPanelContentItemDtos());
+        }
+        return new ResponseUtil<>().setErrorMsg(homePageResponse.getMsg());
+    }
 
     /**
      * 刘鹏飞
