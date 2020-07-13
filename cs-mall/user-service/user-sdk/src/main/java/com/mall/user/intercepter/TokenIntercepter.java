@@ -5,12 +5,14 @@ import com.mall.commons.result.ResponseData;
 import com.mall.commons.result.ResponseUtil;
 import com.mall.commons.tool.utils.CookieUtil;
 import com.mall.user.ILoginService;
+import com.mall.user.IMemberService;
 import com.mall.user.annotation.Anoymous;
 import com.mall.user.constants.SysRetCodeConstants;
 import com.mall.user.dto.CheckAuthRequest;
 import com.mall.user.dto.CheckAuthResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Reference;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -27,6 +29,8 @@ public class TokenIntercepter extends HandlerInterceptorAdapter {
 
     @Reference(timeout = 3000,check = false)
     ILoginService iUserLoginService;
+
+
 
     public static String ACCESS_TOKEN="access_token";
 
