@@ -17,5 +17,5 @@ public interface OrderCoreService {
      */
     CreateOrderResponse createOrder(CreateOrderRequest request);
 
-    OrderDetailsVO selectorderDetailsByOrderIdAndUserId(Integer id, Long uid);
+    OrderDetailsVO selectorderDetailsByOrderIdAndUserId(Integer orderId, Long userId);
 }

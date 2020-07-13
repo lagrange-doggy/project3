@@ -73,13 +73,18 @@ public class OrderCoreServiceImpl implements OrderCoreService {
         return response;
     }
 
+    /**
+     * 查询订单详情
+     */
     @Override
-    public OrderDetailsVO selectorderDetailsByOrderIdAndUserId(Integer id, Long uid) {
-        OrderDetailsVO orderDetailsVO = orderMapper.selectorderDetailsByOrderId(id, uid);
-        if (orderDetailsVO.getUserId() == null){
+    public OrderDetailsVO selectorderDetailsByOrderIdAndUserId(Integer orderId, Long userId) {
+        //查询同时符合orderid和userid的订单信息
+        OrderDetailsVO orderDetailsVO = orderMapper.selectorderDetailsByOrderId(orderId, userId);
+        //不符合 会查不到 传null
+        if (orderDetailsVO.getUserId() == null || orderDetailsVO.getUserName() == null) {
             throw new BizException("**********数据注入异常,userid与订单号不一致**********");
         }
-        orderDetailsVO.setGoodsList(orderMapper.selectOrderGoodsListByOrderIdAndUserId(id));
+        orderDetailsVO.setGoodsList(orderMapper.selectOrderGoodsListByOrderIdAndUserId(orderId));
         return orderDetailsVO;
     }
 

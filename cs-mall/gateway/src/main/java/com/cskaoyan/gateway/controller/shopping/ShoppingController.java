@@ -3,18 +3,13 @@ package com.cskaoyan.gateway.controller.shopping;
 import com.mall.commons.result.ResponseData;
 import com.mall.commons.result.ResponseUtil;
 import com.mall.shopping.IProductCateService;
-<<<<<<< HEAD
 import com.mall.shopping.IShoppingNavigationService;
-=======
 
 import com.mall.shopping.IProductService;
 
-
->>>>>>> 078b07a88631bcc5466762ac57f50cef27d1ff1f
 import com.mall.shopping.constants.ShoppingRetCode;
 import com.mall.shopping.dto.*;
 import com.mall.user.annotation.Anoymous;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.web.bind.annotation.*;
