@@ -26,7 +26,14 @@ from tb_panel a inner join tb_panel_content b on a.id=b.panel_id where a.id=#{pa
     select * from tb_panel where name = #{name}
   </select>
 
+
+  <select id="selectPanelListByPanerId" resultType="com.mall.shopping.dto.ShoppingNavigationVO">
+    select id,full_url as fullUrl,panel_id as panelId,pic_url as picUrl,pic_url2 as picUrl2,pic_url3 as picUrl3,
+    product_id as productId,sort_order as sortOrder,`type` from tb_panel_content where panel_id = 0
+    </select>
+
   <select id="selectAllPanelIdByPosition" resultType="java.lang.Integer">
       SELECT id FROM tb_panel where position = #{position};
   </select>
+
 </mapper>
