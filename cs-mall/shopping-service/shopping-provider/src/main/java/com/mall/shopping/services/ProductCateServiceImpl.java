@@ -1,6 +1,9 @@
 package com.mall.shopping.services;
 
+import com.mall.commons.result.ResponseData;
+import com.mall.commons.result.ResponseUtil;
 import com.mall.shopping.IProductCateService;
+import com.mall.shopping.IProductService;
 import com.mall.shopping.constants.ShoppingRetCode;
 import com.mall.shopping.converter.ContentConverter;
 import com.mall.shopping.dal.entitys.ItemCat;
@@ -14,6 +17,7 @@ import com.mall.shopping.dto.*;
 import com.mall.shopping.services.cache.CacheManager;
 import com.mall.shopping.utils.ExceptionProcessorUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.Reference;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,6 +127,16 @@ public class ProductCateServiceImpl implements IProductCateService {
          recommendResponse.setPanelContentItemDtos(panelContentItemDtos);
          return recommendResponse;
      }
+
+
+
+/*
+* 胡 删除
+* */
+    @Override
+    public Integer deleteCarGoodsById(Integer uid, Integer pid) {
+        return 1;
+    }
 
 
     private AllProductCateResponse getResponse(List<ItemCat> itemCats) {
