@@ -67,8 +67,11 @@ public class ShoppingController {
      */
     @Anoymous
     @GetMapping("/goods")
-    public ResponseData<ShoppingGoodsResultVO> goodsList(Integer page, Integer size, String sort, Integer priceGt, Integer priceLte) {
+    public ResponseData<ShoppingGoodsResultVO> goodsList(Integer page, Integer size, String sort,
+                                                         Integer priceGt, Integer priceLte) {
+        //满足最高最佳的商品合计多少个
         Integer total = productCateService.countByPriceGtAndPriceLte(priceGt, priceLte);
+        //获取商品结果集
         List<ShoppingGoodsVO> data = productCateService.SelectGoodsListByPageAndSizeAndSort(page, size,
                 sort, priceGt, priceLte,total);
         //判断列表是否为空

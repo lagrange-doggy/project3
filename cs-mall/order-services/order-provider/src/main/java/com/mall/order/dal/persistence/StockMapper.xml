@@ -11,7 +11,7 @@
     <result column="restrict_count" jdbcType="INTEGER" property="restrictCount" />
     <result column="sell_id" jdbcType="INTEGER" property="sellId" />
   </resultMap>
-  
+
   <sql id="BaseColumns">
     item_id,stock_count,lock_count,restrict_count,sell_id
   </sql>
@@ -39,6 +39,9 @@
     from tb_stock where item_id in
      <foreach collection="itemIds" item='itemId' open='(' separator=',' close=')'> #{itemId} </foreach>
       for update
+  </select>
+  <select id="selectLimitNumByProductId" resultType="java.lang.Integer">
+    select limit_num from tb_item where id = #{productId}
   </select>
 
 </mapper>

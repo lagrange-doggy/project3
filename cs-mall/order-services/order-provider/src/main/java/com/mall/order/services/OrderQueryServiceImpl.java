@@ -29,5 +29,4 @@ import java.util.List;
 @Component
 @Service
 public class OrderQueryServiceImpl implements OrderQueryService {
-
 }
