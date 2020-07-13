@@ -1,5 +1,6 @@
 package com.cskaoyan.gateway.controller.user;
 
+import com.alibaba.fastjson.JSON;
 import com.mall.commons.result.ResponseData;
 import com.mall.commons.result.ResponseUtil;
 import com.mall.commons.tool.utils.CookieUtil;
@@ -91,7 +92,7 @@ public class MemberController {
             return new ResponseUtil<>().setErrorMsg(loginResponse.getMsg());
         }
         //3.set-cookie
-        Cookie access_token = CookieUtil.genCookie("ACCESS_TOKEN", loginResponse.getToken(), "/", 86400);
+        Cookie access_token = CookieUtil.genCookie(ACCESS_TOKEN, loginResponse.getToken(), "/", 86400);
         response.addCookie(access_token);
         return new ResponseUtil<>().setData(loginResponse);
     }
@@ -101,7 +102,15 @@ public class MemberController {
      * 胡小强
      *
      * */
-    @GetMapping("login")
+
+    /*
+    String userInfo=(String) request.getAttribute(TokenIntercepter.USER_INFO_KEY);
+              Object object=JSON.parse(userInfo);
+              return new ResponseUtil<>().setData(Object);
+
+
+    * */
+    @GetMapping("/login")
     public ResponseData verifyLoginUser(HttpServletRequest request) {
         // 从cookie里面去取token
         String token = CookieUtil.getCookieValue(request, ACCESS_TOKEN);
@@ -110,6 +119,10 @@ public class MemberController {
             return new ResponseUtil<>().setErrorMsg(response.getMsg());
         }
         return new ResponseUtil().setData(response);
+
+//        String userInfo=(String) request.getAttribute(TokenIntercepter.USER_INFO_KEY);
+//        Object object= JSON.parse(userInfo);
+//        return new ResponseUtil<>().setData(object);
     }
 
 

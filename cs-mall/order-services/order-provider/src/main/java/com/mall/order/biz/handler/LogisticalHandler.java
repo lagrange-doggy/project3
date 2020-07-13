@@ -24,6 +24,8 @@ import java.util.Date;
 @Component
 public class LogisticalHandler extends AbstractTransHandler {
 
+    @Autowired
+    private OrderShippingMapper orderShippingMapper;
 
     @Override
     public boolean isAsync() {
@@ -32,7 +34,20 @@ public class LogisticalHandler extends AbstractTransHandler {
 
     @Override
     public boolean handle(TransHandlerContext context) {
+        CreateOrderContext createOrderContext = (CreateOrderContext) context;
+        OrderShipping orderShipping = new OrderShipping();
+        orderShipping.setOrderId(createOrderContext.getOrderId());
+        orderShipping.setReceiverName(createOrderContext.getUserName());
+        orderShipping.setReceiverAddress(createOrderContext.getStreetName());
+        orderShipping.setReceiverPhone(createOrderContext.getTel());
+        orderShipping.setCreated(new Date());
+        orderShipping.setUpdated(new Date());
 
+        int effectedRows = orderShippingMapper.insert(orderShipping);
+        if (effectedRows < 1){
+            throw new BizException(OrderRetCode.SHIPPING_DB_SAVED_FAILED.getCode(),
+                    OrderRetCode.SHIPPING_DB_SAVED_FAILED.getMessage());
+        }
 
         return true;
     }

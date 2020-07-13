@@ -39,7 +39,17 @@ public class ValidateHandler extends AbstractTransHandler {
     @Override
     public boolean handle(TransHandlerContext context) {
         CreateOrderContext createOrderContext = (CreateOrderContext) context;
+        QueryMemberRequest request = new QueryMemberRequest();
+        request.setUserId(createOrderContext.getUserId());
 
+        QueryMemberResponse response = memberService.queryMemberById(request);
+        if (response.getCode().equals(SysRetCodeConstants.SUCCESS.getCode())){
+            String username = response.getUsername();
+            if (!username.equals(createOrderContext.getUserName())){
+                throw new BizException(response.getCode(),response.getMsg());
+            }
+            createOrderContext.setBuyerNickName(username);
+        }
 
         return true;
     }
